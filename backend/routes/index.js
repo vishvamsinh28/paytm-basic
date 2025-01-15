@@ -1,7 +1,29 @@
 const express = require("express")
 const router = express.Router()
 const userRoutes = require("./user")
+const User = require("../db")
+const authenticate = require("../auth")
 
 router.use("/user", userRoutes)
+
+router.put("/user", authenticate, async (req, res) => {
+
+    try {
+        console.log("User ID:", req.userId);
+        const updatedData = await User.updateOne({ _id: req.userId }, req.body);
+
+        res.json({
+            msg: "Update success!",
+            updatedData,
+            data: req.body
+        })
+    } catch (err) {
+        res.json({
+            msg: "Error while updating",
+            err
+        })
+    }
+
+})
 
 module.exports = router
