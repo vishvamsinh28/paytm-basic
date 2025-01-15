@@ -10,10 +10,10 @@ router.post("/signup", async (req, res) => {
         const { username, firstname, lastname, password } = req.body;
 
         const UserValidation = zod.object({
-            username: zod.string().min(6).max(12),
-            firstname: zod.string().min(6).max(12),
-            lastname: zod.string().min(6).max(12),
-            password: zod.string().min(6).max(12),
+            username: zod.string().min(3).max(12),
+            firstname: zod.string().min(3).max(12),
+            lastname: zod.string().min(3).max(12),
+            password: zod.string().min(3).max(12),
         });
 
         const result = UserValidation.safeParse(req.body);
