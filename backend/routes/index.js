@@ -10,7 +10,6 @@ router.use("/account", accountRoutes);
 
 router.put("/user", authenticate, async (req, res) => {
     try {
-        console.log("User ID:", req.userId);
         const updatedData = await User.updateOne({ _id: req.userId }, req.body);
 
         res.json({
