@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const zod = require("zod");
-const User = require("../db");
+const { User } = require("../db");
 const jwt = require("jsonwebtoken");
 
 router.post("/signup", async (req, res) => {

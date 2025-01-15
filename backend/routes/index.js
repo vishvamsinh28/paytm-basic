@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userRoutes = require("./user");
-const User = require("../db");
+const { User } = require("../db");
 const authenticate = require("../auth");
 
 router.use("/user", userRoutes);
@@ -24,7 +24,7 @@ router.put("/user", authenticate, async (req, res) => {
     }
 });
 
-router.get("/user/bulk", async (req, res) => {
+router.get("/user/bulk", authenticate, async (req, res) => {
     const { filter } = req.query;
 
     const users = await User.find({
