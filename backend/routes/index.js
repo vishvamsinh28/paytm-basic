@@ -3,8 +3,10 @@ const router = express.Router();
 const userRoutes = require("./user");
 const { User } = require("../db");
 const authenticate = require("../auth");
+const accountRoutes = require("./accounts")
 
 router.use("/user", userRoutes);
+router.use("/account", accountRoutes);
 
 router.put("/user", authenticate, async (req, res) => {
     try {

@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const zod = require("zod");
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 
 router.post("/signup", async (req, res) => {
@@ -41,6 +41,12 @@ router.post("/signup", async (req, res) => {
         });
 
         const userID = user._id;
+        const accountBalace = Math.floor(Math.random() * 1000) + 1;
+
+        await Account.create({
+            userID,
+            balance: accountBalace
+        })
 
         const JWTtoken = jwt.sign({ userID }, process.env.JWT_SECRET);
 
