@@ -13,6 +13,7 @@ router.get("/balance", authenticate, async (req, res) => {
     })
 })
 
+// this is a bad solution, a good approach would be to use transaction
 router.post("/transfer", authenticate, async (req, res) => {
     const user = await Account.findOne({userID: req.userId})
     const { amount, to } = req.body
