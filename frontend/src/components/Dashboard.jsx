@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-    const [userData, setUserData] = useState(null); // Initialize with null
-    const [error, setError] = useState(null); // To handle any errors
+    const [userData, setUserData] = useState(null);
+    const [allUserData, setAll] = useState([]);
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
         const getData = async () => {
@@ -16,13 +17,28 @@ export default function Dashboard() {
                 const response = await axios.get(apiRoute, { headers });
                 setUserData(response.data);
             } catch (err) {
-                setError("Failed to fetch user data");
                 console.error(err);
             }
         };
 
+        const allData = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const headers = {
+                    Authorization: `Bearer ${token}`,
+                };
+                const apiRoute = `http://localhost:3000/api/v1/user/bulk?filter=${search}`;
+                const response = await axios.get(apiRoute, { headers });
+                
+                setAll(response.data.msg.filter(user => userData.user.username != user.username));
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        allData();
         getData();
-    }, []);
+    }, [userData]);
 
     return (
         <div className="w-screen h-screen bg-white">
@@ -47,15 +63,25 @@ export default function Dashboard() {
             </h1>
 
 
-            {/* Error handling */}
-            {error && <div className="text-red-500">{error}</div>}
-
             <div className="px-4">
                 <input
+                    onChange={(e) => setSearch(e.target.value)}
                     type="text"
                     className="w-full outline-0 rounded-md border border-gray-300 px-4 py-2"
                     placeholder="Search User..."
+                    value={search}
                 />
+            </div>
+
+            <div>
+                {allUserData && allUserData.map((user) => {
+                    return (
+                        <div className="flex justify-between m-6" key={user._id}>
+                            <h1 className="font-bold">{user.firstname} {user.lastname}</h1>
+                            <button className="bg-black text-white p-2 rounded-md">Send Money</button>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
