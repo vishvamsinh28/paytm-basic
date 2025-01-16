@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
     const [userData, setUserData] = useState(null);
     const [allUserData, setAll] = useState([]);
     const [search, setSearch] = useState("")
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getData = async () => {
@@ -78,7 +81,7 @@ export default function Dashboard() {
                     return (
                         <div className="flex justify-between m-6" key={user._id}>
                             <h1 className="font-bold">{user.firstname} {user.lastname}</h1>
-                            <button className="bg-black text-white p-2 rounded-md">Send Money</button>
+                            <button onClick={() => navigate("/send?username=" + user.username + "&firstname=" + user.firstname)} className="bg-black text-white p-2 rounded-md">Send Money</button>
                         </div>
                     );
                 })}
