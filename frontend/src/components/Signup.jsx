@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Signup() {
+    const navigate = useNavigate();
+
     return (
         <div className="bg-white p-4 rounded-lg mt-16">
             <form className="flex flex-col">
@@ -45,7 +49,7 @@ export default function Signup() {
 
                 <div className="flex m-4">
                     <h3 className="text-center mx-2">Already have an account ?</h3>
-                    <a href="/signin" className="underline">Login</a>
+                    <a onClick={() => navigate("/signin")} className="underline">Login</a>
                 </div>
             </form>
         </div>
