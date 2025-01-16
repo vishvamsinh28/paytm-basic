@@ -82,7 +82,7 @@ export default function Signup() {
 
                 <div className="flex m-4">
                     <h3 className="text-center mx-2">Already have an account ?</h3>
-                    <a onClick={() => navigate("/signin")} className="underline">Login</a>
+                    <a onClick={() => navigate("/login")} className="underline">Login</a>
                 </div>
             </form>
         </div>
