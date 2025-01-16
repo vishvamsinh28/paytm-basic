@@ -3,13 +3,32 @@ const router = express.Router();
 const userRoutes = require("./user");
 const { User } = require("../db");
 const authenticate = require("../auth");
-const accountRoutes = require("./accounts")
+const accountRoutes = require("./accounts");
+const zod = require("zod");
 
 router.use("/user", userRoutes);
 router.use("/account", accountRoutes);
 
 router.put("/user", authenticate, async (req, res) => {
     try {
+
+        // using zod validation because mongoose only validate while creating the object
+        const UserValidation = zod.object({
+            username: zod.string().min(3).max(12),
+            firstname: zod.string().min(3).max(12),
+            lastname: zod.string().min(3).max(12),
+            password: zod.string().min(3).max(12),
+        });
+
+        const result = UserValidation.safeParse(req.body);
+
+        if (!result.success) {
+            return res.json({
+                msg: "Validation failed please enter correct input value",
+                err: result.error,
+            });
+        }
+
         const updatedData = await User.updateOne({ _id: req.userId }, req.body);
 
         res.json({
@@ -51,8 +70,8 @@ router.get("/user/bulk", authenticate, async (req, res) => {
     }));
 
     res.json({
-        msg: finalData
-    })
+        msg: finalData,
+    });
 });
 
 module.exports = router;
