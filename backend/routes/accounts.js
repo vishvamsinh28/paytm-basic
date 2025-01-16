@@ -8,9 +8,11 @@ router.get("/balance", authenticate, async (req, res) => {
     const account = await Account.findOne({
         userID: req.userId,
     });
+    const user = await User.findOne({_id: req.userId})
 
     res.json({
         balance: account.balance,
+        user
     });
 });
 
