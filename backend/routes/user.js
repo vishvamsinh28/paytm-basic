@@ -45,8 +45,8 @@ router.post("/signup", async (req, res) => {
 
         await Account.create({
             userID,
-            balance: accountBalace
-        })
+            balance: accountBalace,
+        });
 
         const JWTtoken = jwt.sign({ userID }, process.env.JWT_SECRET);
 
@@ -60,33 +60,32 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    try{
-        const { username, password } = req.body
-        
-        const userExists = await User.findOne({username})
+    try {
+        const { username, password } = req.body;
 
-        if(!userExists){
+        const userExists = await User.findOne({ username });
+
+        if (!userExists) {
             return res.json({
-                msg:"User doesn't exits"
-            })
+                msg: "User doesn't exits",
+            });
         }
-    
-        if(userExists.username == username && userExists.password == password){
+
+        if (userExists.username == username && userExists.password == password) {
             const userID = userExists._id;
             const JWTtoken = jwt.sign({ userID }, process.env.JWT_SECRET);
 
             return res.json({
-                msg:"login Successful",
-                token: JWTtoken
-            })
+                msg: "login Successful",
+                token: JWTtoken,
+            });
         }
 
         res.json({
-            msg: "Error while login"
-        })
-
-    }catch(err){
-        console.log(err)
+            msg: "Error while login",
+        });
+    } catch (err) {
+        console.log(err);
     }
 });
 

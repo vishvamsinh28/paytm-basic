@@ -11,7 +11,6 @@ router.use("/account", accountRoutes);
 
 router.put("/user", authenticate, async (req, res) => {
     try {
-
         // using zod validation because mongoose only validate while creating the object
         const UserValidation = zod.object({
             username: zod.string().min(3).max(12),
