@@ -44,7 +44,11 @@ router.put("/user", authenticate, async (req, res) => {
 });
 
 router.get("/user/bulk", authenticate, async (req, res) => {
-    const { filter } = req.query;
+    let { filter } = req.query;
+
+    if (typeof filter !== 'string') {
+        filter = '';
+    }
 
     const users = await User.find({
         $or: [
